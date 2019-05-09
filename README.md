@@ -1,57 +1,36 @@
+# Sudoku
 
-# Implemented strategy:
+Simple AI to play a game of sudoku.
 
-## "Pick definitive"
+## Codebase
 
-- Iterate through regions of 1-9 in the grid
-- Find all possible values for each open slot in region
-- If the count of values for a slot is 1, assign that possible value
+`/game` houses I/O logic for setting up a game board as well as some stock game boards.
 
-### Problem with strategy:
+`/strategies` houses two strategies for solving sudoku boards:
 
-It is possible that all available slots have 2 or more possible values
+- elimination
+- lookahead
 
-## Alternative/additional strategy:
+## Elimination
 
-## "Only possible placement"
+Elimination breaks up the board into the 27 9-point "regions"
+(rows, columns, and "boxes"). It then iterates through these regions,
+identifying all possible values to be assigned to each point in that region.
+If a given point has only one possible value, or no other point in its region
+can be assigned a value that can be assigned to it, it is assigned that value.
 
-- Iterate through 1 - 9
-- Find places in the board where if it's not placed there, some region will not be able to place it
+The algorithm is further optimized to "fallout" from assignments,
+recomputing and assigning possible values for all other points in a point's regions
+when it is assigned a value.
 
-### Questions:
+## Lookahead
 
-- is this just a reframing of the above strategy (covered by the prior approach)?
-- how to identify necessity to place?
+Sometimes the elimination is unable to make a definitive choice.
+Lookahead is the solution in this situation.
 
-## Alternative/additional strategy:
-
-## "Lookahead"
-
-- Iterate through regions of 1-9 in the grid
-- Find all possible values for each open slot in region
-- If the count of values for a slot is 1, assign that possible value
-- If the count of values for a slot is 2, pick one
-- Tentatively assign that value, and continue the algorithm forward, assigning all additional values tentatively as well
-- If a conflict is reached, rollback all tentative placements
-
-### Questions:
-
-- how to manage/flag tentative assignments?
-- can we get into tentative "stacks" (i.e. make a tentative choice while in a tentative scenario)?
-- how to identify when a conflict is reached
-
-## Alternative/additional strategy:
-
-## "Track possibles"
-
-- Iterate through regions of 1-9
-- Find all possible values for each open slot in region
-- If the count of values for a slot is 1, assign that possible value
-		- Remove this value from list of possibles of all members of its 3 regions
-		- If one of those members has only 1 possible value, assign that values, update its possibles (repeat...)
-- Otherwise, store list of possible values on that slot
-- If point in region has a possible value not present in any of its region neighbors, assign it
-		- Update all neighbors (see above)
-
-### Questions:
-- how to guarantee that list of possibles will reduce to 1? hard to say, but this is likely definitive.
+Lookahead wraps the elimination strategy, providing a system to make a guess when
+no definitive choice can be made. When elimination "deadlocks" (several turns have occurred without victory),
+lookahead will pick the unassigned point with fewest possible values in the game.
+It will then make a copy of the game, assign a possible value to that point, and
+try to solve the resulting game state with elimination. If it works, great! If not,
+the choice is rolled back and a different possible value is attempted.
