@@ -274,22 +274,28 @@ func (a *Attempt) FindFewestChoices() *Point {
 	return choice
 }
 
+// Possibles returns the cached list of possible values for point
 func (p *Point) Possibles() []int {
 	return p.possibles
 }
 
+// Coords returns the x,y coords at which the point can be found
+// on the game board
 func (p *Point) Coords() (int, int) {
 	return p.x, p.y
 }
 
+// IsAssigned returns true if the point has a value assigned to it
 func (p *Point) IsAssigned() bool {
 	return *p.val != 0
 }
 
+// String returns a user-readable representation of the point
 func (p *Point) String() string {
 	return fmt.Sprintf("(%d,%d): %d", p.x, p.y, *p.val)
 }
 
+// Print prints a user-readable representation of the point to STDOUT
 func (p *Point) Print() {
 	fmt.Printf("\nPoint %s\n", p.String())
 	if !p.IsAssigned() {
@@ -301,6 +307,9 @@ func (p *Point) Print() {
 
 	fmt.Println("")
 }
+
+// The following are extracted into functions
+// for ease of reasoning about them
 
 // 0,0 1,0 2,0 0,1 ---> 0
 // 3,0 4,0 5,0 3,1 ---> 1

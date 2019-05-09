@@ -1,6 +1,6 @@
 package game
 
-// EasyGames is an array of games ordered by increasing difficulty
+// EasyGames is an array of games that can be beat with a few turns on the elimination strategy
 var EasyGames = []Game{
 	Game{
 		Values: [][]int{
@@ -56,6 +56,8 @@ var EasyGames = []Game{
 	},
 }
 
+// MediumGames is an array of games that are purportedly more challenging
+// than the easy, but can still be beat with elimination
 var MediumGames = []Game{
 	Game{
 		Values: [][]int{
@@ -72,6 +74,7 @@ var MediumGames = []Game{
 	},
 }
 
+// HardGames require the lookahead strategy
 var HardGames = []Game{
 	Game{
 		Values: [][]int{

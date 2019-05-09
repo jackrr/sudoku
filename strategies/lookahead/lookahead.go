@@ -17,8 +17,9 @@ type Guess struct {
 
 // Play will attempt to complete the sudoku board by
 // repeating the following loop:
-// 1. Attempting to complete with the elimination strategy
-// 2. Doing guess-based lookahead to settle ambiguities
+// 1. Attempt to complete with the elimination strategy
+// 2. If not complete within certain number of turns,
+// 		make a guess based on possible values for a square.
 func Play(game *game.Game, maxMoves int, printEvery int) bool {
 	var err error
 
